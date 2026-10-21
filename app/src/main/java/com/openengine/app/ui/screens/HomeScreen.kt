@@ -59,7 +59,13 @@ fun HomeScreen(
     var downloadProgress by remember { mutableStateOf<Int?>(null) }
     var isCheckingUpdate by remember { mutableStateOf(false) }
 
-    val currentVersion = "1.0.0"
+    val currentVersion = remember(context) {
+        try {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "1.0.0"
+        } catch (e: Exception) {
+            "1.0.0"
+        }
+    }
 
     // Otomatis cek update saat aplikasi dibuka
     LaunchedEffect(Unit) {
