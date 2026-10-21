@@ -83,24 +83,56 @@ class UpdateManager(private val context: Context) {
         downloadUrl: String,
         onProgress: (Int) -> Unit
     ): Result<File> = withContext(Dispatchers.IO) {
+        var connection: HttpURLConnection? = null
         try {
             val downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) ?: context.filesDir
             val apkFile = File(downloadDir, "OpenEngine_Update.apk")
             if (apkFile.exists()) apkFile.delete()
 
-            val url = URL(downloadUrl)
-            val connection = (url.openConnection() as HttpURLConnection).apply {
-                connectTimeout = 15000
-                readTimeout = 15000
-                setRequestProperty("User-Agent", "OpenEngine-Updater")
+            // Ikuti redirect HTTP (GitHub 302 -> AWS/Azure Blob Storage)
+            var currentUrl = downloadUrl
+            var redirectCount = 0
+            while (redirectCount < 6) {
+                val urlObj = URL(currentUrl)
+                val conn = (urlObj.openConnection() as HttpURLConnection).apply {
+                    connectTimeout = 20000
+                    readTimeout = 20000
+                    instanceFollowRedirects = true
+                    setRequestProperty("User-Agent", "OpenEngine-Updater")
+                    setRequestProperty("Accept", "*/*")
+                }
+
+                val code = conn.responseCode
+                if (code == HttpURLConnection.HTTP_MOVED_TEMP ||
+                    code == HttpURLConnection.HTTP_MOVED_PERM ||
+                    code == HttpURLConnection.HTTP_SEE_OTHER ||
+                    code == 307 || code == 308
+                ) {
+                    val location = conn.getHeaderField("Location")
+                    conn.disconnect()
+                    if (!location.isNullOrEmpty()) {
+                        currentUrl = location
+                        redirectCount++
+                        continue
+                    }
+                }
+
+                connection = conn
+                break
             }
 
-            val totalBytes = connection.contentLength
-            var downloadedBytes = 0
+            val finalConn = connection ?: throw IllegalStateException("Gagal membuat koneksi unduhan.")
+            val responseCode = finalConn.responseCode
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw IllegalStateException("Server mengembalikan kode HTTP $responseCode")
+            }
 
-            connection.inputStream.use { input ->
+            val totalBytes = finalConn.contentLength.toLong()
+            var downloadedBytes = 0L
+
+            finalConn.inputStream.use { input ->
                 FileOutputStream(apkFile).use { output ->
-                    val buffer = ByteArray(8192)
+                    val buffer = ByteArray(16384)
                     var bytesRead: Int
                     while (input.read(buffer).also { bytesRead = it } != -1) {
                         output.write(buffer, 0, bytesRead)
@@ -110,18 +142,26 @@ class UpdateManager(private val context: Context) {
                             withContext(Dispatchers.Main) {
                                 onProgress(progress)
                             }
+                        } else {
+                            val kb = (downloadedBytes / 1024L).toInt()
+                            withContext(Dispatchers.Main) {
+                                onProgress(kb)
+                            }
                         }
                     }
                 }
             }
 
             withContext(Dispatchers.Main) {
+                onProgress(100)
                 installApk(apkFile)
             }
             Result.success(apkFile)
         } catch (e: Exception) {
-            Log.e(TAG, "Gagal mengunduh APK: ${e.message}")
+            Log.e(TAG, "Gagal mengunduh APK: ${e.message}", e)
             Result.failure(e)
+        } finally {
+            connection?.disconnect()
         }
     }
 

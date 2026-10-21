@@ -165,8 +165,18 @@ fun HomeScreen(
                             onClick = {
                                 scope.launch {
                                     downloadProgress = 0
-                                    updateManager.downloadAndInstallApk(updateInfo!!.downloadUrl) { progress ->
+                                    val result = updateManager.downloadAndInstallApk(updateInfo!!.downloadUrl) { progress ->
                                         downloadProgress = progress
+                                    }
+                                    if (result.isFailure) {
+                                        downloadProgress = null
+                                        Toast.makeText(
+                                            context,
+                                            "Gagal mengunduh: ${result.exceptionOrNull()?.localizedMessage}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    } else {
+                                        downloadProgress = null
                                     }
                                 }
                             },
@@ -248,17 +258,26 @@ fun HomeScreen(
 
         // Dialog Progress Unduhan Pembaruan
         if (downloadProgress != null) {
+            val progress = downloadProgress ?: 0
             AlertDialog(
                 onDismissRequest = { /* Don't dismiss while downloading */ },
                 title = { Text("Mengunduh Pembaruan...") },
                 text = {
                     Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
-                        LinearProgressIndicator(
-                            progress = { (downloadProgress ?: 0) / 100f },
-                            modifier = Modifier.fillMaxWidth().height(8.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("${downloadProgress ?: 0}% selesai", fontSize = 13.sp)
+                        if (progress in 1..100) {
+                            LinearProgressIndicator(
+                                progress = { progress / 100f },
+                                modifier = Modifier.fillMaxWidth().height(8.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("$progress% selesai", fontSize = 13.sp)
+                        } else {
+                            LinearProgressIndicator(
+                                modifier = Modifier.fillMaxWidth().height(8.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Menghubungkan & mengunduh paket...", fontSize = 13.sp)
+                        }
                     }
                 },
                 confirmButton = {}
