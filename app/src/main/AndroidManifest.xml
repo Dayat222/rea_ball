@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:name=".OpenEngineApp"
+        android:allowBackup="true"
+        android:icon="@android:drawable/sym_def_app_icon"
+        android:label="OpenEngine"
+        android:roundIcon="@android:drawable/sym_def_app_icon"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <!-- Main UI Launcher Activity -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Proxy Activities for Virtual Processes -->
+        <activity
+            android:name="com.openengine.core.proxy.ProxyActivityP0"
+            android:process=":p0"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.openengine.core.proxy.ProxyActivityP1"
+            android:process=":p1"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.openengine.core.proxy.ProxyActivityP2"
+            android:process=":p2"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.openengine.core.proxy.ProxyActivityP3"
+            android:process=":p3"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.openengine.core.proxy.ProxyActivityP4"
+            android:process=":p4"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
+            android:exported="false" />
+
+        <!-- Proxy JobServices for Virtual Processes -->
+        <service
+            android:name="com.openengine.core.proxy.ProxyJobServiceP0"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":p0"
+            android:exported="false" />
+        <service
+            android:name="com.openengine.core.proxy.ProxyJobServiceP1"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":p1"
+            android:exported="false" />
+        <service
+            android:name="com.openengine.core.proxy.ProxyJobServiceP2"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":p2"
+            android:exported="false" />
+        <service
+            android:name="com.openengine.core.proxy.ProxyJobServiceP3"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":p3"
+            android:exported="false" />
+        <service
+            android:name="com.openengine.core.proxy.ProxyJobServiceP4"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":p4"
+            android:exported="false" />
+
+        <!-- FileProvider for Auto Updater APK Installation -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

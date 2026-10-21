@@ -1,0 +1,60 @@
+name: Build & Release OpenEngine APK
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK as Workflow Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenEngine-Debug-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Create or Update GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name == 'main' && 'v1.0.0' || github.ref_name }}
+          name: OpenEngine Release ${{ github.ref_name == 'main' && 'v1.0.0' || github.ref_name }}
+          body: |
+            ## OpenEngine — Android Virtual Sandbox
+            Otomatis dikompilasi oleh GitHub Actions CI/CD.
+            
+            ### Fitur:
+            - Virtual Container & Sandbox Isolation
+            - Multi-Process Execution (:p0 - :p4)
+            - Auto-Update In-App Enabled (mengunduh rilis langsung dari repositori ini)
+            
+            Unduh file `app-debug.apk` di bawah ini untuk menginstal.
+          files: app/build/outputs/apk/debug/app-debug.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
