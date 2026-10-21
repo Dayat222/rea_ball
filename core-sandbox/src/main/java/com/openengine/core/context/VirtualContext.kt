@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.content.res.Resources
+import android.view.LayoutInflater
 import com.openengine.core.SandboxEngine
 import dalvik.system.DexClassLoader
 import java.io.File
@@ -14,7 +15,8 @@ import java.io.File
 /**
  * VirtualContext: ContextWrapper khusus yang mengisolasi lingkungan aplikasi tamu.
  * Mengalihkan panggilan penyimpanan (files, cache, database, shared preferences)
- * ke folder sandbox terisolasi, serta memuat Resource & Asset milik APK tamu.
+ * ke folder sandbox terisolasi, serta memuat Resource & Asset milik APK tamu
+ * termasuk Split APKs dan pustaka native (.so).
  */
 class VirtualContext(
     base: Context,
@@ -28,6 +30,13 @@ class VirtualContext(
         SandboxEngine.get().storageRedirector.getVirtualDataDir(guestPackageName, userId)
     }
 
+    private val allApkFiles: List<File> by lazy {
+        val baseApk = File(guestApkPath)
+        val parent = baseApk.parentFile
+        val apks = parent?.listFiles { f -> f.name.endsWith(".apk") }?.toList()
+        if (!apks.isNullOrEmpty()) apks else listOf(baseApk)
+    }
+
     private val guestResources: Resources by lazy {
         createGuestResources()
     }
@@ -36,7 +45,11 @@ class VirtualContext(
         createGuestClassLoader()
     }
 
+    private var layoutInflater: LayoutInflater? = null
+
     override fun getPackageName(): String = guestPackageName
+
+    override fun getPackageCodePath(): String = guestApkPath
 
     override fun getDataDir(): File = sandboxDir
 
@@ -63,16 +76,35 @@ class VirtualContext(
 
     override fun getClassLoader(): ClassLoader = guestClassLoader
 
+    override fun getSystemService(name: String): Any? {
+        if (Context.LAYOUT_INFLATER_SERVICE == name) {
+            if (layoutInflater == null) {
+                val superInflater = super.getSystemService(name) as? LayoutInflater
+                layoutInflater = superInflater?.cloneInContext(this)
+            }
+            return layoutInflater
+        }
+        return super.getSystemService(name)
+    }
+
     override fun getApplicationInfo(): ApplicationInfo {
         val info = baseContext.packageManager.getPackageArchiveInfo(
             guestApkPath,
             PackageManager.GET_ACTIVITIES
         )?.applicationInfo ?: super.getApplicationInfo()
+
+        info.packageName = guestPackageName
         info.dataDir = sandboxDir.absolutePath
         info.sourceDir = guestApkPath
         info.publicSourceDir = guestApkPath
-        if (!guestNativeLibDir.isNullOrEmpty()) {
-            info.nativeLibraryDir = guestNativeLibDir
+
+        val libDir = File(File(guestApkPath).parentFile, "lib")
+        info.nativeLibraryDir = if (libDir.exists()) libDir.absolutePath else (guestNativeLibDir ?: libDir.absolutePath)
+
+        if (allApkFiles.size > 1) {
+            val splits = allApkFiles.filter { it.absolutePath != guestApkPath }.map { it.absolutePath }.toTypedArray()
+            info.splitSourceDirs = splits
+            info.splitPublicSourceDirs = splits
         }
         return info
     }
@@ -81,7 +113,12 @@ class VirtualContext(
         return try {
             val assetManager = AssetManager::class.java.newInstance()
             val addAssetPathMethod = AssetManager::class.java.getMethod("addAssetPath", String::class.java)
-            addAssetPathMethod.invoke(assetManager, guestApkPath)
+
+            // Muat Base APK dan seluruh Split APKs ke AssetManager
+            for (apk in allApkFiles) {
+                addAssetPathMethod.invoke(assetManager, apk.absolutePath)
+            }
+
             val superRes = baseContext.resources
             Resources(assetManager, superRes.displayMetrics, superRes.configuration)
         } catch (e: Exception) {
@@ -90,23 +127,26 @@ class VirtualContext(
     }
 
     private fun createGuestClassLoader(): ClassLoader {
-        val apkFile = File(guestApkPath)
         // Fix Android 14+ SecurityException: Writable dex file is not allowed
-        if (apkFile.exists() && apkFile.canWrite()) {
-            apkFile.setReadOnly()
+        for (apk in allApkFiles) {
+            if (apk.exists() && apk.canWrite()) {
+                apk.setReadOnly()
+            }
         }
 
         val dexOptDir = File(sandboxDir, "dexopt").apply { mkdirs() }
-        val libDir = File(sandboxDir, "lib").apply { mkdirs() }
+        val libDir = File(File(guestApkPath).parentFile, "lib").apply { mkdirs() }
 
         val nativeSearchPath = if (!guestNativeLibDir.isNullOrEmpty()) {
-            "${guestNativeLibDir}:${libDir.absolutePath}"
+            "${libDir.absolutePath}:${guestNativeLibDir}"
         } else {
             libDir.absolutePath
         }
 
+        val dexPath = allApkFiles.joinToString(File.pathSeparator) { it.absolutePath }
+
         return DexClassLoader(
-            guestApkPath,
+            dexPath,
             dexOptDir.absolutePath,
             nativeSearchPath,
             baseContext.classLoader

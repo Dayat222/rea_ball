@@ -14,5 +14,6 @@ data class VirtualAppInfo(
     val apkPath: String,
     val dataDir: String,
     val userId: Int = 0,
-    val isRunning: Boolean = false
+    val isRunning: Boolean = false,
+    val launcherActivity: String? = null
 )

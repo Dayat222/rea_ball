@@ -1,5 +1,8 @@
 package com.openengine.app.ui.screens
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -13,8 +16,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -36,6 +41,7 @@ import com.openengine.app.updater.UpdateManager
 import com.openengine.core.SandboxEngine
 import com.openengine.core.model.VirtualAppInfo
 import kotlinx.coroutines.launch
+import java.io.File
 
 data class AvailableApp(
     val packageName: String,
@@ -59,6 +65,10 @@ fun HomeScreen(
     var downloadProgress by remember { mutableStateOf<Int?>(null) }
     var isCheckingUpdate by remember { mutableStateOf(false) }
 
+    val crashLogFile = remember(context) { File(context.filesDir, "last_crash.log") }
+    var crashLogContent by remember { mutableStateOf<String?>(null) }
+    var showCrashDialog by remember { mutableStateOf(false) }
+
     val currentVersion = remember(context) {
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "1.0.0"
@@ -67,8 +77,11 @@ fun HomeScreen(
         }
     }
 
-    // Otomatis cek update saat aplikasi dibuka
+    // Refresh status crash log & update saat dibuka
     LaunchedEffect(Unit) {
+        if (crashLogFile.exists() && crashLogFile.length() > 0) {
+            crashLogContent = try { crashLogFile.readText() } catch (e: Exception) { null }
+        }
         val info = updateManager.checkForUpdates(currentVersion)
         if (info.hasUpdate) {
             updateInfo = info
@@ -188,6 +201,50 @@ fun HomeScreen(
                 }
             }
 
+            // Crash Log Banner jika ada crash sebelumnya
+            if (!crashLogContent.isNullOrEmpty()) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                "⚠️ Log Force Close Terdeteksi",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onErrorContainer
+                            )
+                            Text(
+                                "Terdapat catatan crash pada sandbox sebelumnya.",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f)
+                            )
+                        }
+                        Button(
+                            onClick = { showCrashDialog = true },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error
+                            ),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+                        ) {
+                            Text("Lihat", fontSize = 12.sp)
+                        }
+                    }
+                }
+            }
+
             // Status Card
             Card(
                 modifier = Modifier
@@ -290,6 +347,53 @@ fun HomeScreen(
                 onAppSelected = { pkgName ->
                     engine.installPackage(pkgName)
                     showAppPicker = false
+                }
+            )
+        }
+
+        // Dialog Rincian Crash Log
+        if (showCrashDialog && !crashLogContent.isNullOrEmpty()) {
+            AlertDialog(
+                onDismissRequest = { showCrashDialog = false },
+                title = { Text("Log Diagnostik Crash", fontSize = 16.sp, fontWeight = FontWeight.Bold) },
+                text = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 350.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        Text(
+                            text = crashLogContent ?: "",
+                            fontSize = 11.sp,
+                            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clipboard.setPrimaryClip(ClipData.newPlainText("Crash Log", crashLogContent))
+                            Toast.makeText(context, "Log disalin ke clipboard", Toast.LENGTH_SHORT).show()
+                        }
+                    ) {
+                        Text("Salin Log")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            try {
+                                crashLogFile.delete()
+                                crashLogContent = null
+                            } catch (e: Exception) {}
+                            showCrashDialog = false
+                        }
+                    ) {
+                        Text("Hapus Log", color = MaterialTheme.colorScheme.error)
+                    }
                 }
             )
         }

@@ -27,6 +27,13 @@
             </intent-filter>
         </activity>
 
+        <!-- Crash Reporter Activity -->
+        <activity
+            android:name="com.openengine.core.proxy.CrashReportActivity"
+            android:theme="@android:style/Theme.Material.NoActionBar"
+            android:process=":crash"
+            android:exported="false" />
+
         <!-- Proxy Activities for Virtual Processes -->
         <activity
             android:name="com.openengine.core.proxy.ProxyActivityP0"
