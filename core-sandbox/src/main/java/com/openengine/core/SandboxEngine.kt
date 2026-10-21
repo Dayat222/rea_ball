@@ -90,11 +90,15 @@ class SandboxEngine private constructor(private val context: Context) {
             val srcApk = File(srcAppInfo.sourceDir)
 
             val targetApk = storageRedirector.getVirtualApkFile(sourcePackageName)
+            if (targetApk.exists() && !targetApk.canWrite()) {
+                targetApk.setWritable(true)
+            }
             FileInputStream(srcApk).use { input ->
                 FileOutputStream(targetApk).use { output ->
                     input.copyTo(output)
                 }
             }
+            targetApk.setReadOnly()
 
             val appInfo = VirtualAppInfo(
                 packageName = sourcePackageName,
@@ -136,6 +140,9 @@ class SandboxEngine private constructor(private val context: Context) {
     fun uninstallApp(packageName: String, userId: Int = 0): Boolean {
         storageRedirector.clearVirtualData(packageName, userId)
         val apkFile = storageRedirector.getVirtualApkFile(packageName)
+        if (apkFile.exists()) {
+            apkFile.setWritable(true)
+        }
         apkFile.parentFile?.deleteRecursively()
 
         _installedApps.value = _installedApps.value.filterNot { it.packageName == packageName && it.userId == userId }

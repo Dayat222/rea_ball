@@ -20,7 +20,8 @@ class VirtualContext(
     base: Context,
     private val guestPackageName: String,
     private val guestApkPath: String,
-    private val userId: Int = 0
+    private val userId: Int = 0,
+    private val guestNativeLibDir: String? = null
 ) : ContextWrapper(base) {
 
     private val sandboxDir: File by lazy {
@@ -70,6 +71,9 @@ class VirtualContext(
         info.dataDir = sandboxDir.absolutePath
         info.sourceDir = guestApkPath
         info.publicSourceDir = guestApkPath
+        if (!guestNativeLibDir.isNullOrEmpty()) {
+            info.nativeLibraryDir = guestNativeLibDir
+        }
         return info
     }
 
@@ -86,12 +90,25 @@ class VirtualContext(
     }
 
     private fun createGuestClassLoader(): ClassLoader {
+        val apkFile = File(guestApkPath)
+        // Fix Android 14+ SecurityException: Writable dex file is not allowed
+        if (apkFile.exists() && apkFile.canWrite()) {
+            apkFile.setReadOnly()
+        }
+
         val dexOptDir = File(sandboxDir, "dexopt").apply { mkdirs() }
         val libDir = File(sandboxDir, "lib").apply { mkdirs() }
+
+        val nativeSearchPath = if (!guestNativeLibDir.isNullOrEmpty()) {
+            "${guestNativeLibDir}:${libDir.absolutePath}"
+        } else {
+            libDir.absolutePath
+        }
+
         return DexClassLoader(
             guestApkPath,
             dexOptDir.absolutePath,
-            libDir.absolutePath,
+            nativeSearchPath,
             baseContext.classLoader
         )
     }

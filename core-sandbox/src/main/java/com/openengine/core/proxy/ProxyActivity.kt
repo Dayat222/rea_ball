@@ -65,8 +65,15 @@ open class ProxyActivity : Activity() {
             return
         }
 
+        // Ambil path native library (.so) jika aplikasi terinstal di perangkat
+        val nativeLibDir = try {
+            packageManager.getPackageInfo(targetPkg, 0).applicationInfo?.nativeLibraryDir
+        } catch (e: Exception) {
+            null
+        }
+
         // Inisialisasi Virtual Context
-        val vContext = VirtualContext(this, targetPkg, apkFile.absolutePath, userId)
+        val vContext = VirtualContext(this, targetPkg, apkFile.absolutePath, userId, nativeLibDir)
         virtualContext = vContext
 
         try {
