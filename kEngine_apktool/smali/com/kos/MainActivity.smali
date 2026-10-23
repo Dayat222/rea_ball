@@ -139,6 +139,12 @@
     .line 25
     invoke-static {p0, v0}, Landroidx/emoji2/text/xt;->a(Landroidx/emoji2/text/r81;Landroidx/compose/runtime/internal/ComposableLambdaImpl;)V
 
+    const-string v0, "KOS_App"
+
+    const-string v1, "MainActivity.onCreate setContent completed."
+
+    invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
     .line 26
     .line 27
     .line 28
