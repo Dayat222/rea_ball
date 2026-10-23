@@ -9,22 +9,18 @@
 
 # direct methods
 .method public constructor <init>()V
-    .locals 1
+    .locals 2
 
     .line 1
     invoke-direct {p0}, Landroidx/emoji2/text/g20;-><init>()V
 
-    .line 2
-    .line 3
-    .line 4
+    :try_start_0
     const-string v0, "kos"
 
-    .line 5
-    .line 6
     invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 7
-    .line 8
-    .line 9
+    :catch_0
     return-void
 .end method

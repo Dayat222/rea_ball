@@ -148,50 +148,27 @@
 .method public final onResume()V
     .locals 3
 
-    .line 1
     invoke-super {p0}, Landroid/app/Activity;->onResume()V
+
+    :try_start_0
     invoke-static {p0}, Lcom/openengine/updater/AutoUpdater;->checkUpdate(Landroid/app/Activity;)V
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_updater
 
-    .line 2
-    .line 3
-    .line 4
+    :catch_updater
+    :try_start_1
     sget-object v0, Landroidx/emoji2/text/ao0;->a:Landroidx/emoji2/text/lh1;
-
-    .line 5
-    .line 6
     invoke-virtual {p0}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
-
-    .line 7
-    .line 8
-    .line 9
     move-result-object v0
-
-    .line 10
-    const-wide v1, 0x6554389c390586abL    # 1.3110610843499624E180
-
-    .line 11
-    .line 12
-    .line 13
-    .line 14
-    .line 15
+    const-wide v1, 0x6554389c390586abL
     invoke-static {v1, v2}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    .line 16
-    .line 17
-    .line 18
     move-result-object v1
-
-    .line 19
     invoke-static {v0, v1}, Landroidx/emoji2/text/ay0;->s(Ljava/lang/Object;Ljava/lang/String;)V
-
-    .line 20
-    .line 21
-    .line 22
     invoke-static {v0}, Landroidx/emoji2/text/ao0;->c(Landroid/content/Context;)V
+    :try_end_1
+    .catchall {:try_start_1 .. :try_end_1} :catch_resume
 
-    .line 23
-    .line 24
-    .line 25
+    :catch_resume
     return-void
 .end method
 

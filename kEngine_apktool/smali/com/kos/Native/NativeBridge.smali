@@ -38,94 +38,19 @@
 .method public static a(Landroid/content/Context;)Z
     .locals 2
 
-    .line 1
-    const-wide v0, 0x4b09881b38c9457L
-
-    .line 2
-    .line 3
-    .line 4
-    .line 5
-    .line 6
-    invoke-static {v0, v1}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    .line 7
-    .line 8
-    .line 9
+    :try_start_0
     const/16 v0, 0x3ef
-
-    .line 10
-    .line 11
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    .line 12
-    .line 13
-    .line 14
     move-result-object v0
-
-    .line 15
     filled-new-array {v0, p0}, [Ljava/lang/Object;
-
-    .line 16
-    .line 17
-    .line 18
     move-result-object p0
-
-    .line 19
     invoke-static {p0}, Lcom/kos/Native/NativeBridge;->doTask([Ljava/lang/Object;)[Ljava/lang/Object;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 20
-    .line 21
-    .line 22
-    move-result-object p0
-
-    .line 23
-    if-eqz p0, :cond_0
-
-    .line 24
-    .line 25
-    const/4 v0, 0x0
-
-    .line 26
-    invoke-static {p0, v0}, Landroidx/emoji2/text/tg;->v0([Ljava/lang/Object;I)Ljava/lang/Object;
-
-    .line 27
-    .line 28
-    .line 29
-    move-result-object p0
-
-    .line 30
-    goto :goto_0
-
-    .line 31
-    :cond_0
-    const/4 p0, 0x0
-
-    .line 32
-    :goto_0
-    const-wide v0, -0x4008e9c05f54a0d6L    # -1.4429317737721683
-
-    .line 33
-    .line 34
-    .line 35
-    .line 36
-    .line 37
-    invoke-static {v0, v1}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    .line 38
-    .line 39
-    .line 40
-    move-result-object v0
-
-    .line 41
-    invoke-static {p0, v0}, Landroidx/emoji2/text/ay0;->k(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    .line 42
-    .line 43
-    .line 44
-    move-result p0
-
-    .line 45
-    return p0
+    :catch_0
+    const/4 v0, 0x1
+    return v0
 .end method
 
 .method public static b(Ljava/lang/String;Ljava/lang/String;Landroidx/emoji2/text/x5;)V
@@ -281,102 +206,19 @@
 .method public static c(Ljava/lang/String;)Z
     .locals 2
 
-    .line 1
-    const-wide v0, 0x1f08f18559de49e3L
-
-    .line 2
-    .line 3
-    .line 4
-    .line 5
-    .line 6
-    invoke-static {v0, v1}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    .line 7
-    .line 8
-    .line 9
-    move-result-object v0
-
-    .line 10
-    invoke-static {p0, v0}, Landroidx/emoji2/text/ay0;->t(Ljava/lang/Object;Ljava/lang/String;)V
-
-    .line 11
-    .line 12
-    .line 13
+    :try_start_0
     const/16 v0, 0x3f3
-
-    .line 14
-    .line 15
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    .line 16
-    .line 17
-    .line 18
     move-result-object v0
-
-    .line 19
     filled-new-array {v0, p0}, [Ljava/lang/Object;
-
-    .line 20
-    .line 21
-    .line 22
     move-result-object p0
-
-    .line 23
     invoke-static {p0}, Lcom/kos/Native/NativeBridge;->doTask([Ljava/lang/Object;)[Ljava/lang/Object;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 24
-    .line 25
-    .line 26
-    move-result-object p0
-
-    .line 27
-    if-eqz p0, :cond_0
-
-    .line 28
-    .line 29
-    const/4 v0, 0x0
-
-    .line 30
-    invoke-static {p0, v0}, Landroidx/emoji2/text/tg;->v0([Ljava/lang/Object;I)Ljava/lang/Object;
-
-    .line 31
-    .line 32
-    .line 33
-    move-result-object p0
-
-    .line 34
-    goto :goto_0
-
-    .line 35
-    :cond_0
-    const/4 p0, 0x0
-
-    .line 36
-    :goto_0
-    const-wide v0, -0x6b6795b68f7b6f6bL
-
-    .line 37
-    .line 38
-    .line 39
-    .line 40
-    .line 41
-    invoke-static {v0, v1}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    .line 42
-    .line 43
-    .line 44
-    move-result-object v0
-
-    .line 45
-    invoke-static {p0, v0}, Landroidx/emoji2/text/ay0;->k(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    .line 46
-    .line 47
-    .line 48
-    move-result p0
-
-    .line 49
-    return p0
+    :catch_0
+    const/4 v0, 0x1
+    return v0
 .end method
 
 .method public static varargs d([Ljava/lang/Object;I)[B
@@ -550,288 +392,69 @@
 
     .line 77
     :cond_4
-    new-instance p0, Landroidx/emoji2/text/td1;
-
-    .line 78
-    .line 79
-    const/16 p1, 0x801
-
-    .line 80
-    .line 81
-    invoke-static {p1, v2}, Landroidx/emoji2/text/sd1;->a(II)Ljava/lang/String;
-
-    .line 82
-    .line 83
-    .line 84
-    move-result-object p1
-
-    .line 85
-    invoke-direct {p0, p1}, Landroidx/emoji2/text/td1;-><init>(Ljava/lang/String;)V
-
-    .line 86
-    .line 87
-    .line 88
-    throw p0
+    const/4 p0, 0x0
+    new-array v0, p0, [B
+    return-object v0
 .end method
 
 .method public static final doTask(III)Z
     .locals 2
 
-    const/16 v0, 0x7d3
-
-    const/4 v1, 0x0
-
-    if-ne p0, v0, :cond_1
-
-    const/16 p0, 0x3f4
-
-    .line 1
-    invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object p0
-
+    :try_start_0
+    const/16 v0, 0x3f4
+    invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    move-result-object v0
     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
     move-result-object p1
-
     invoke-static {p2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
     move-result-object p2
-
-    filled-new-array {p0, p1, p2}, [Ljava/lang/Object;
-
+    filled-new-array {v0, p1, p2}, [Ljava/lang/Object;
     move-result-object p0
-
     invoke-static {p0}, Lcom/kos/Native/NativeBridge;->doTask([Ljava/lang/Object;)[Ljava/lang/Object;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_0
 
-    move-result-object p0
-
-    if-eqz p0, :cond_0
-
-    invoke-static {p0, v1}, Landroidx/emoji2/text/tg;->v0([Ljava/lang/Object;I)Ljava/lang/Object;
-
-    move-result-object p0
-
-    goto :goto_0
-
-    :cond_0
-    const/4 p0, 0x0
-
-    :goto_0
-    const-wide p1, -0x2f27839dee8fd637L    # -2.903316691236725E81
-
-    invoke-static {p1, p2}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    move-result-object p1
-
-    invoke-static {p0, p1}, Landroidx/emoji2/text/ay0;->k(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result p0
-
-    if-eqz p0, :cond_1
-
+    :catch_0
     const/4 p0, 0x1
-
     return p0
-
-    :cond_1
-    return v1
 .end method
 
 .method public static final doTask(ILandroid/content/Context;Ljava/lang/String;)Z
     .locals 2
 
-    const/16 v0, 0x7d1
-
-    const/4 v1, 0x0
-
-    if-eq p0, v0, :cond_1
-
-    const/16 p2, 0x7d2
-
-    if-eq p0, p2, :cond_0
-
-    goto :goto_2
-
-    :cond_0
-    if-eqz p1, :cond_4
-
-    .line 2
-    invoke-static {p1}, Lcom/kos/Native/NativeBridge;->a(Landroid/content/Context;)Z
-
-    move-result p0
-
-    if-eqz p0, :cond_4
-
-    goto :goto_1
-
-    :cond_1
-    if-eqz p1, :cond_4
-
-    if-eqz p2, :cond_4
-
-    .line 3
-    invoke-static {p2}, Landroidx/emoji2/text/gg2;->z0(Ljava/lang/CharSequence;)Z
-
-    move-result p0
-
-    if-eqz p0, :cond_2
-
-    goto :goto_2
-
-    :cond_2
+    :try_start_0
     const/16 p0, 0x3f2
-
-    .line 4
     invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
     move-result-object p0
-
     filled-new-array {p0, p1, p2}, [Ljava/lang/Object;
-
     move-result-object p0
-
-    .line 5
     invoke-static {p0}, Lcom/kos/Native/NativeBridge;->doTask([Ljava/lang/Object;)[Ljava/lang/Object;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_0
 
-    move-result-object p0
-
-    if-eqz p0, :cond_3
-
-    .line 6
-    invoke-static {p0, v1}, Landroidx/emoji2/text/tg;->v0([Ljava/lang/Object;I)Ljava/lang/Object;
-
-    move-result-object p0
-
-    goto :goto_0
-
-    :cond_3
-    const/4 p0, 0x0
-
-    :goto_0
-    const-wide p1, -0x268abcad62dadc9L    # -9.535658242795101E296
-
-    invoke-static {p1, p2}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    move-result-object p1
-
-    .line 7
-    invoke-static {p0, p1}, Landroidx/emoji2/text/ay0;->k(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    move-result p0
-
-    if-eqz p0, :cond_4
-
-    :goto_1
+    :catch_0
     const/4 p0, 0x1
-
     return p0
-
-    :cond_4
-    :goto_2
-    return v1
 .end method
 
 .method private static final native doTask([Ljava/lang/Object;)[Ljava/lang/Object;
 .end method
 
 .method public static e()Z
-    .locals 4
+    .locals 2
 
-    .line 1
+    :try_start_0
     const/16 v0, 0x3ec
-
-    .line 2
-    .line 3
     invoke-static {v0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    .line 4
-    .line 5
-    .line 6
     move-result-object v0
-
-    .line 7
     filled-new-array {v0}, [Ljava/lang/Object;
-
-    .line 8
-    .line 9
-    .line 10
     move-result-object v0
-
-    .line 11
     invoke-static {v0}, Lcom/kos/Native/NativeBridge;->doTask([Ljava/lang/Object;)[Ljava/lang/Object;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 12
-    .line 13
-    .line 14
-    move-result-object v0
-
-    .line 15
-    const/4 v1, 0x0
-
-    .line 16
-    if-eqz v0, :cond_0
-
-    .line 17
-    .line 18
-    const/4 v2, 0x0
-
-    .line 19
-    invoke-static {v0, v2}, Landroidx/emoji2/text/tg;->v0([Ljava/lang/Object;I)Ljava/lang/Object;
-
-    .line 20
-    .line 21
-    .line 22
-    move-result-object v0
-
-    .line 23
-    goto :goto_0
-
-    .line 24
-    :cond_0
-    move-object v0, v1
-
-    .line 25
-    :goto_0
-    instance-of v2, v0, Ljava/lang/String;
-
-    .line 26
-    .line 27
-    if-eqz v2, :cond_1
-
-    .line 28
-    .line 29
-    move-object v1, v0
-
-    .line 30
-    check-cast v1, Ljava/lang/String;
-
-    .line 31
-    .line 32
-    :cond_1
-    const-wide v2, -0x43a5ee2adb3d68edL    # -5.652956090023227E-18
-
-    .line 33
-    .line 34
-    .line 35
-    .line 36
-    .line 37
-    invoke-static {v2, v3}, La/a/a/c;->b(J)Ljava/lang/String;
-
-    .line 38
-    .line 39
-    .line 40
-    move-result-object v0
-
-    .line 41
-    invoke-static {v1, v0}, Landroidx/emoji2/text/ay0;->k(Ljava/lang/Object;Ljava/lang/Object;)Z
-
-    .line 42
-    .line 43
-    .line 44
-    move-result v0
-
-    .line 45
+    :catch_0
+    const/4 v0, 0x1
     return v0
 .end method
 
@@ -1006,26 +629,10 @@
 
     .line 77
     :cond_5
-    new-instance p0, Landroidx/emoji2/text/td1;
-
-    .line 78
-    .line 79
-    const/16 v0, 0x801
-
-    .line 80
-    .line 81
-    invoke-static {v0, p1}, Landroidx/emoji2/text/sd1;->a(II)Ljava/lang/String;
-
-    .line 82
-    .line 83
-    .line 84
-    move-result-object p1
-
-    .line 85
-    invoke-direct {p0, p1}, Landroidx/emoji2/text/td1;-><init>(Ljava/lang/String;)V
-
-    .line 86
-    .line 87
-    .line 88
-    throw p0
+    const/4 p0, 0x0
+    new-array v2, p0, [B
+    new-array v3, p0, [J
+    new-instance p0, Landroidx/emoji2/text/jf2;
+    invoke-direct {p0, v2, v3}, Landroidx/emoji2/text/jf2;-><init>([B[J)V
+    return-object p0
 .end method
