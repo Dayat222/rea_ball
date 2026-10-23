@@ -1,0 +1,45 @@
+.class public abstract Landroidx/emoji2/text/r81;
+.super Landroidx/emoji2/text/wt;
+.source "r8-map-id-30f00d0b5b98302f01e9a5ffdb1f1c86c0818a9ab6354b8f76b44e0856c8f4a6"
+
+
+# virtual methods
+.method public final attachBaseContext(Landroid/content/Context;)V
+    .locals 2
+
+    .line 1
+    const-wide v0, 0x5d33eb1b9bb5e944L    # 9.487946344681331E140
+
+    .line 2
+    .line 3
+    .line 4
+    .line 5
+    .line 6
+    invoke-static {v0, v1}, La/a/a/c;->b(J)Ljava/lang/String;
+
+    .line 7
+    .line 8
+    .line 9
+    move-result-object v0
+
+    .line 10
+    invoke-static {p1, v0}, Landroidx/emoji2/text/ay0;->t(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 11
+    .line 12
+    .line 13
+    invoke-static {p1}, Landroidx/emoji2/text/hl;->U(Landroid/content/Context;)Landroid/content/Context;
+
+    .line 14
+    .line 15
+    .line 16
+    move-result-object p1
+
+    .line 17
+    invoke-super {p0, p1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V
+
+    .line 18
+    .line 19
+    .line 20
+    return-void
+.end method

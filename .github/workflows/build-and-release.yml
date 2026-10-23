@@ -23,43 +23,57 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Grant Execute Permission for Gradlew
-        run: chmod +x gradlew
+      - name: Install Android Packaging Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zipalign apksigner wget
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Download Apktool
+        run: |
+          wget -q https://github.com/iBotPeaches/Apktool/releases/download/v2.10.0/apktool_2.10.0.jar -O apktool.jar
 
-      - name: Upload APK as Workflow Artifact
+      - name: Build and Sign OpenEngine APK
+        run: |
+          mkdir -p dist
+          java -jar apktool.jar b kEngine_apktool -o unaligned.apk
+          zipalign -p -f 4 unaligned.apk dist/OpenEngine-Release.apk
+          apksigner sign --ks app/keystore.jks --ks-pass pass:openengine123 dist/OpenEngine-Release.apk
+
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: OpenEngine-Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: OpenEngine-APK
+          path: dist/OpenEngine-Release.apk
 
-      - name: Extract Version Name
-        id: get_version
+      - name: Determine Release Tag
+        id: release_tag
         run: |
-          VERSION=$(grep 'versionName = ' app/build.gradle.kts | head -n 1 | awk -F '"' '{print $2}')
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG="v1.0.6"
+          fi
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create or Update GitHub Release
         if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.get_version.outputs.VERSION }}
-          name: OpenEngine Release v${{ steps.get_version.outputs.VERSION }}
+          tag_name: ${{ steps.release_tag.outputs.TAG }}
+          name: OpenEngine Release ${{ steps.release_tag.outputs.TAG }}
           body: |
-            ## OpenEngine — Android Virtual Sandbox
-            Otomatis dikompilasi oleh GitHub Actions CI/CD.
-            
-            ### Fitur:
-            - Virtual Container & Sandbox Isolation
-            - Multi-Process Execution (:p0 - :p4)
-            - Auto-Update In-App Enabled (mengunduh rilis langsung dari repositori ini)
-            
-            Unduh file `app-debug.apk` di bawah ini untuk menginstal.
-          files: app/build/outputs/apk/debug/app-debug.apk
+            ## OpenEngine — Full Native Sandbox Engine & Auto-Update
+
+            Dikompilasi secara otomatis oleh GitHub Actions CI/CD.
+
+            ### Rincian Rilis:
+            - **Full Native Virtual Engine (`libkos.so` + BlackBox)**: Mengatasi seluruh force close pada game 3D (seperti 8 Ball Pool) dengan intercept syscall native Linux (`open`, `stat`, `access`).
+            - **Native Sandbox File Redirection**: Data game dialihkan ke sandbox privat secara penuh.
+            - **Integrated In-App Auto-Updater**: Aplikasi akan otomatis mengecek dan mengunduh pembaruan rilis selanjutnya langsung dari repositori ini.
+
+            Silakan unduh `OpenEngine-Release.apk` di bawah ini untuk menginstal atau memperbarui.
+          files: dist/OpenEngine-Release.apk
           draft: false
           prerelease: false
         env:

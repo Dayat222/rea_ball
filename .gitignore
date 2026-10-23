@@ -16,6 +16,10 @@ core-sandbox/build/
 # Ignore big reverse-engineered files
 kEngine3.7.apk
 libkos.so
+kEngine_apktool/build/
+dist/
+*.idsig
+*.unaligned.apk
 
 # Log and OS files
 *.log

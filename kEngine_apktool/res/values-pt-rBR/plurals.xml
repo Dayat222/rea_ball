@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="accounts_removed_count">
+        <item quantity="other">%1$d contas removidas.</item>
+        <item quantity="one">%1$d conta removida.</item>
+    </plurals>
+    <plurals name="home_game_count">
+        <item quantity="other">%1$d jogos</item>
+        <item quantity="one">%1$d jogo</item>
+    </plurals>
+</resources>

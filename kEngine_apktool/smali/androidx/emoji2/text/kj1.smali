@@ -1,0 +1,416 @@
+.class public final Landroidx/emoji2/text/kj1;
+.super Ljava/lang/Object;
+.source "r8-map-id-30f00d0b5b98302f01e9a5ffdb1f1c86c0818a9ab6354b8f76b44e0856c8f4a6"
+
+
+# instance fields
+.field public final a:Landroid/content/Context;
+
+.field public final b:Ljava/util/ArrayList;
+
+.field public final c:Ljava/util/ArrayList;
+
+.field public final d:Ljava/util/ArrayList;
+
+.field public e:Ljava/lang/CharSequence;
+
+.field public f:Ljava/lang/CharSequence;
+
+.field public g:Landroid/app/PendingIntent;
+
+.field public h:I
+
+.field public i:Z
+
+.field public j:Landroidx/emoji2/text/x5;
+
+.field public k:Ljava/lang/String;
+
+.field public l:Landroid/os/Bundle;
+
+.field public final m:Ljava/lang/String;
+
+.field public final n:Z
+
+.field public final o:Landroid/app/Notification;
+
+.field public final p:Ljava/util/ArrayList;
+
+
+# direct methods
+.method public constructor <init>(Landroid/content/Context;Ljava/lang/String;)V
+    .locals 2
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    new-instance v0, Ljava/util/ArrayList;
+
+    .line 5
+    .line 6
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 7
+    .line 8
+    .line 9
+    iput-object v0, p0, Landroidx/emoji2/text/kj1;->b:Ljava/util/ArrayList;
+
+    .line 10
+    .line 11
+    new-instance v0, Ljava/util/ArrayList;
+
+    .line 12
+    .line 13
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 14
+    .line 15
+    .line 16
+    iput-object v0, p0, Landroidx/emoji2/text/kj1;->c:Ljava/util/ArrayList;
+
+    .line 17
+    .line 18
+    new-instance v0, Ljava/util/ArrayList;
+
+    .line 19
+    .line 20
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 21
+    .line 22
+    .line 23
+    iput-object v0, p0, Landroidx/emoji2/text/kj1;->d:Ljava/util/ArrayList;
+
+    .line 24
+    .line 25
+    const/4 v0, 0x1
+
+    .line 26
+    iput-boolean v0, p0, Landroidx/emoji2/text/kj1;->i:Z
+
+    .line 27
+    .line 28
+    new-instance v1, Landroid/app/Notification;
+
+    .line 29
+    .line 30
+    invoke-direct {v1}, Landroid/app/Notification;-><init>()V
+
+    .line 31
+    .line 32
+    .line 33
+    iput-object v1, p0, Landroidx/emoji2/text/kj1;->o:Landroid/app/Notification;
+
+    .line 34
+    .line 35
+    iput-object p1, p0, Landroidx/emoji2/text/kj1;->a:Landroid/content/Context;
+
+    .line 36
+    .line 37
+    iput-object p2, p0, Landroidx/emoji2/text/kj1;->m:Ljava/lang/String;
+
+    .line 38
+    .line 39
+    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
+
+    .line 40
+    .line 41
+    .line 42
+    move-result-wide p1
+
+    .line 43
+    iput-wide p1, v1, Landroid/app/Notification;->when:J
+
+    .line 44
+    .line 45
+    const/4 p1, -0x1
+
+    .line 46
+    iput p1, v1, Landroid/app/Notification;->audioStreamType:I
+
+    .line 47
+    .line 48
+    const/4 p1, 0x0
+
+    .line 49
+    iput p1, p0, Landroidx/emoji2/text/kj1;->h:I
+
+    .line 50
+    .line 51
+    new-instance p1, Ljava/util/ArrayList;
+
+    .line 52
+    .line 53
+    invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
+
+    .line 54
+    .line 55
+    .line 56
+    iput-object p1, p0, Landroidx/emoji2/text/kj1;->p:Ljava/util/ArrayList;
+
+    .line 57
+    .line 58
+    iput-boolean v0, p0, Landroidx/emoji2/text/kj1;->n:Z
+
+    .line 59
+    .line 60
+    return-void
+.end method
+
+.method public static b(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+    .locals 2
+
+    .line 1
+    if-nez p0, :cond_0
+
+    .line 2
+    .line 3
+    return-object p0
+
+    .line 4
+    :cond_0
+    invoke-interface {p0}, Ljava/lang/CharSequence;->length()I
+
+    .line 5
+    .line 6
+    .line 7
+    move-result v0
+
+    .line 8
+    const/16 v1, 0x1400
+
+    .line 9
+    .line 10
+    if-le v0, v1, :cond_1
+
+    .line 11
+    .line 12
+    const/4 v0, 0x0
+
+    .line 13
+    invoke-interface {p0, v0, v1}, Ljava/lang/CharSequence;->subSequence(II)Ljava/lang/CharSequence;
+
+    .line 14
+    .line 15
+    .line 16
+    move-result-object p0
+
+    .line 17
+    :cond_1
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public final a()Landroid/app/Notification;
+    .locals 5
+
+    .line 1
+    new-instance v0, Landroidx/emoji2/text/nf;
+
+    .line 2
+    .line 3
+    invoke-direct {v0, p0}, Landroidx/emoji2/text/nf;-><init>(Landroidx/emoji2/text/kj1;)V
+
+    .line 4
+    .line 5
+    .line 6
+    iget-object v1, v0, Landroidx/emoji2/text/nf;->e:Ljava/lang/Object;
+
+    .line 7
+    .line 8
+    check-cast v1, Landroid/app/Notification$Builder;
+
+    .line 9
+    .line 10
+    iget-object v0, v0, Landroidx/emoji2/text/nf;->f:Ljava/lang/Object;
+
+    .line 11
+    .line 12
+    check-cast v0, Landroidx/emoji2/text/kj1;
+
+    .line 13
+    .line 14
+    iget-object v2, v0, Landroidx/emoji2/text/kj1;->j:Landroidx/emoji2/text/x5;
+
+    .line 15
+    .line 16
+    if-eqz v2, :cond_0
+
+    .line 17
+    .line 18
+    new-instance v3, Landroid/app/Notification$BigTextStyle;
+
+    .line 19
+    .line 20
+    invoke-direct {v3, v1}, Landroid/app/Notification$BigTextStyle;-><init>(Landroid/app/Notification$Builder;)V
+
+    .line 21
+    .line 22
+    .line 23
+    const/4 v4, 0x0
+
+    .line 24
+    invoke-virtual {v3, v4}, Landroid/app/Notification$BigTextStyle;->setBigContentTitle(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
+
+    .line 25
+    .line 26
+    .line 27
+    move-result-object v3
+
+    .line 28
+    iget-object v4, v2, Landroidx/emoji2/text/x5;->f:Ljava/lang/Object;
+
+    .line 29
+    .line 30
+    check-cast v4, Ljava/lang/CharSequence;
+
+    .line 31
+    .line 32
+    invoke-virtual {v3, v4}, Landroid/app/Notification$BigTextStyle;->bigText(Ljava/lang/CharSequence;)Landroid/app/Notification$BigTextStyle;
+
+    .line 33
+    .line 34
+    .line 35
+    :cond_0
+    sget v3, Landroid/os/Build$VERSION;->SDK_INT:I
+
+    .line 36
+    .line 37
+    const/16 v4, 0x1a
+
+    .line 38
+    .line 39
+    if-lt v3, v4, :cond_1
+
+    .line 40
+    .line 41
+    invoke-virtual {v1}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+
+    .line 42
+    .line 43
+    .line 44
+    move-result-object v1
+
+    .line 45
+    goto :goto_0
+
+    .line 46
+    :cond_1
+    invoke-virtual {v1}, Landroid/app/Notification$Builder;->build()Landroid/app/Notification;
+
+    .line 47
+    .line 48
+    .line 49
+    move-result-object v1
+
+    .line 50
+    :goto_0
+    if-eqz v2, :cond_2
+
+    .line 51
+    .line 52
+    iget-object v0, v0, Landroidx/emoji2/text/kj1;->j:Landroidx/emoji2/text/x5;
+
+    .line 53
+    .line 54
+    invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    .line 55
+    .line 56
+    .line 57
+    :cond_2
+    if-eqz v2, :cond_3
+
+    .line 58
+    .line 59
+    iget-object v0, v1, Landroid/app/Notification;->extras:Landroid/os/Bundle;
+
+    .line 60
+    .line 61
+    if-eqz v0, :cond_3
+
+    .line 62
+    .line 63
+    const-string v2, "androidx.core.app.NotificationCompat$BigTextStyle"
+
+    .line 64
+    .line 65
+    const-string v3, "androidx.core.app.extra.COMPAT_TEMPLATE"
+
+    .line 66
+    .line 67
+    invoke-virtual {v0, v3, v2}, Landroid/os/BaseBundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 68
+    .line 69
+    .line 70
+    :cond_3
+    return-object v1
+.end method
+
+.method public final c(I)V
+    .locals 2
+
+    .line 1
+    iget-object v0, p0, Landroidx/emoji2/text/kj1;->o:Landroid/app/Notification;
+
+    .line 2
+    .line 3
+    iget v1, v0, Landroid/app/Notification;->flags:I
+
+    .line 4
+    .line 5
+    or-int/2addr p1, v1
+
+    .line 6
+    iput p1, v0, Landroid/app/Notification;->flags:I
+
+    .line 7
+    .line 8
+    return-void
+.end method
+
+.method public final d(Landroidx/emoji2/text/x5;)V
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Landroidx/emoji2/text/kj1;->j:Landroidx/emoji2/text/x5;
+
+    .line 2
+    .line 3
+    if-eq v0, p1, :cond_0
+
+    .line 4
+    .line 5
+    iput-object p1, p0, Landroidx/emoji2/text/kj1;->j:Landroidx/emoji2/text/x5;
+
+    .line 6
+    .line 7
+    iget-object v0, p1, Landroidx/emoji2/text/x5;->e:Ljava/lang/Object;
+
+    .line 8
+    .line 9
+    check-cast v0, Landroidx/emoji2/text/kj1;
+
+    .line 10
+    .line 11
+    if-eq v0, p0, :cond_0
+
+    .line 12
+    .line 13
+    iput-object p0, p1, Landroidx/emoji2/text/x5;->e:Ljava/lang/Object;
+
+    .line 14
+    .line 15
+    invoke-virtual {p0, p1}, Landroidx/emoji2/text/kj1;->d(Landroidx/emoji2/text/x5;)V
+
+    .line 16
+    .line 17
+    .line 18
+    :cond_0
+    return-void
+.end method

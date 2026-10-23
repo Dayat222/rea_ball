@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="accounts_removed_count">
+        <item quantity="other">تمت إزالة %1$d حساب.</item>
+        <item quantity="zero">لم تتم إزالة أي حسابات.</item>
+        <item quantity="one">تمت إزالة حساب واحد.</item>
+        <item quantity="two">تمت إزالة حسابين.</item>
+        <item quantity="few">تمت إزالة %1$d حسابات.</item>
+        <item quantity="many">تمت إزالة %1$d حسابًا.</item>
+    </plurals>
+    <plurals name="home_game_count">
+        <item quantity="other">%1$d لعبة</item>
+        <item quantity="zero">لا ألعاب</item>
+        <item quantity="one">لعبة واحدة</item>
+        <item quantity="two">لعبتان</item>
+        <item quantity="few">%1$d ألعاب</item>
+        <item quantity="many">%1$d لعبة</item>
+    </plurals>
+</resources>
