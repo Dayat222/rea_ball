@@ -102,6 +102,10 @@
     .line 6
     move-result-object v0
 
+    const-string v1, "[DIAG 6] MainActivity.onCreate entered"
+
+    invoke-static {p0, v1}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
+
     .line 7
     invoke-super {p0, p1}, Landroidx/emoji2/text/wt;->onCreate(Landroid/os/Bundle;)V
 
@@ -138,6 +142,10 @@
     .line 24
     .line 25
     invoke-static {p0, v0}, Landroidx/emoji2/text/xt;->a(Landroidx/emoji2/text/r81;Landroidx/compose/runtime/internal/ComposableLambdaImpl;)V
+
+    const-string v0, "[DIAG 7] setContent completed!"
+
+    invoke-static {p0, v0}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
 
     const-string v0, "KOS_App"
 

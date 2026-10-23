@@ -57,6 +57,9 @@
     .line 10
     invoke-super {p0, p1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V
 
+    const-string v0, "[DIAG 1] attachBaseContext start"
+    invoke-static {p1, v0}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
+
     .line 11
     .line 12
     .line 13
@@ -529,6 +532,9 @@
     .line 253
     .line 254
     invoke-virtual {v0, p1, v2}, Landroidx/emoji2/text/h01;->G(Landroid/content/Context;Landroidx/emoji2/text/ee;)V
+
+    const-string v0, "[DIAG 2] G() completed"
+    invoke-static {p1, v0}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
     :try_end_2
     .catch Ljava/lang/Exception; {:try_start_2 .. :try_end_2} :catch_0
 
@@ -590,6 +596,9 @@
     .line 4
     .line 5
     invoke-super {v1}, Landroid/app/Application;->onCreate()V
+
+    const-string v0, "[DIAG 3] App.onCreate start"
+    invoke-static {v1, v0}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
 
     .line 6
     .line 7
@@ -1372,7 +1381,13 @@
     .line 393
     :cond_c
     :goto_7
+    const-string v3, "[DIAG 4] Engine H() init starting..."
+    invoke-static {v1, v3}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
+
     invoke-virtual {v0}, Landroidx/emoji2/text/h01;->H()V
+
+    const-string v3, "[DIAG 5] Engine H() init completed!"
+    invoke-static {v1, v3}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
 
     .line 394
     .line 395

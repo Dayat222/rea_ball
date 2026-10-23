@@ -190,6 +190,10 @@
     .line 72
     check-cast v10, Landroid/content/Context;
 
+    const-string v0, "[DIAG 8] da1 Compose starting..."
+
+    invoke-static {v10, v0}, Lcom/kos/BootLogger;->log(Landroid/content/Context;Ljava/lang/String;)V
+
     .line 73
     .line 74
     const-wide v11, -0x538830080654c886L    # -1.7837095189711585E-94
